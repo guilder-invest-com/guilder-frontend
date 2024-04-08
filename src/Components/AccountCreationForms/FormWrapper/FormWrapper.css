@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap');
+
+
+h4 {
+    font-weight: 300;
+    text-align: left;
+    margin: 0;
+    margin-bottom: 2rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #FFFFFF;
+}
+
+.form-contents {
+    display: grid;
+    gap: 1rem .5rem;
+    justify-content: flex-start;
+    grid-template-columns: minmax(auto, 400px);   
+}

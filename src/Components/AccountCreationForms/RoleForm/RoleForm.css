@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap');
+
+.role-question{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+p {
+    margin-top: 0px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+span {
+    display: block;
+    padding-top: 5px;
+    font-size: .7rem;
+    color: #8F8F8F;
+}
+
+.role-question p:nth-child(1) {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 500;
+    /* font-size: .8rem; */
+
+}
+
+.role-question p:nth-child(2) {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: .8rem;
+    color: #8F8F8F;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #C2C2C2;
+    padding: 2px 0;
+    margin: 5px 0;
+  }
+
+  .role-radio {
+    display: none; 
+    padding: 50px;
+    width: max-content;
+}
+
+.role-label {
+    display: block;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 5px;
+    background-color: #fff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-radius: 5px;
+    
+}
+
+.role-label:hover {
+    background-color: #FFF8DE;
+} 
+
+.role-radio:checked + .role-label {
+    background-color: #FFF8DE; /* Light yellow background */
+    border-color: #8F8F8F; /* Change the border color on hover and when selected */
+}
