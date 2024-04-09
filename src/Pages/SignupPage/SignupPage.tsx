@@ -4,6 +4,8 @@ import useMultistepForm from "../../useMultistepForm";
 import AccountForm from "../../Components/AccountCreationForms/AccountForm/AccountForm";
 import { registerUser } from "../../Api/api";
 import "./SignupPage.css";
+import { doPasswordsMatch, isValidEmail } from "../../utils/validations";
+import { hashPassword } from "../../utils/hashPassword";
 
 export type FormData = {
   email: string;
@@ -44,20 +46,21 @@ export default function SignupPage() {
     if (!isLastStep) return next();
 
     if (isLastStep) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(data.email)) {
+      if (!isValidEmail(data.email)) {
         alert("Please enter a valid email address.");
         return;
       }
 
-      if (data.password !== data.confirmPassword) {
+      if (!doPasswordsMatch(data.password, data.confirmPassword)) {
         alert("Passwords do not match. Please try again.");
         return;
       }
 
+      const hashedPassword = hashPassword(data.password);
+
       const userData = {
         email: data.email,
-        password: data.password,
+        password: hashedPassword,
       };
 
       try {
@@ -68,7 +71,7 @@ export default function SignupPage() {
         console.log("Registration failed: ", error);
       }
 
-      console.log(data);
+      console.log(userData);
     }
   }
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BACKEND_API_URL = "http://localhost:8080/";
+const BACKEND_API_URL = "http://dev.guilder-invest.com:3500";
 
 type UserData = {
   email: string;
