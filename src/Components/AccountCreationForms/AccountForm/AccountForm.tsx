@@ -3,8 +3,10 @@ import "./AccountForm.css";
 
 type AccountData = {
   email: string;
+  username: string;
   password: string;
   confirmPassword: string;
+  displayName: string;
 };
 
 type AccountFormProps = AccountData & {
@@ -13,6 +15,8 @@ type AccountFormProps = AccountData & {
 
 export default function AccountForm({
   email,
+  username,
+  displayName,
   password,
   confirmPassword,
   updateFields,
@@ -25,6 +29,22 @@ export default function AccountForm({
         placeholder="Email"
         value={email}
         onChange={(e) => updateFields({ email: e.currentTarget.value })}
+      />
+      <input
+        required
+        type="text"
+        placeholder="Username"
+        minLength={8}
+        value={username}
+        onChange={(e) => updateFields({ username: e.currentTarget.value })}
+      />
+      <input
+        required
+        type="text"
+        placeholder="Display Name"
+        minLength={8}
+        value={displayName}
+        onChange={(e) => updateFields({ displayName: e.currentTarget.value })}
       />
       <input
         required

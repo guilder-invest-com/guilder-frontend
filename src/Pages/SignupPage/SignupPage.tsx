@@ -9,6 +9,8 @@ import { hashPassword } from "../../utils/hashPassword";
 
 export type FormData = {
   email: string;
+  username: string;
+  displayName: string;
   password: string;
   confirmPassword: string;
   role: string;
@@ -16,6 +18,8 @@ export type FormData = {
 
 const INITIAL_DATA: FormData = {
   email: "",
+  username: "",
+  displayName: "",
   password: "",
   confirmPassword: "",
   role: "",
@@ -60,8 +64,12 @@ export default function SignupPage() {
 
       const userData = {
         email: data.email,
+        username: data.username,
+        displayName: data.displayName,
         password: hashedPassword,
       };
+      
+      console.log(userData);
 
       try {
         const response = await registerUser(userData);
