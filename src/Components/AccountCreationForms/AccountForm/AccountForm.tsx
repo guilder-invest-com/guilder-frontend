@@ -1,16 +1,20 @@
 import FormWrapper from "../FormWrapper/FormWrapper";
 import "./AccountForm.css";
 
-type AccountData = {
+type RegisterAccountData = {
   email: string;
   username: string;
   password: string;
   confirmPassword: string;
   displayName: string;
+  emailAvailable: boolean;
+  usernameAvailable: boolean;
 };
 
-type AccountFormProps = AccountData & {
-  updateFields: (fields: Partial<AccountData>) => void;
+type AccountFormProps = RegisterAccountData & {
+  updateFields: (fields: Partial<RegisterAccountData>) => void;
+  checkEmailAvailability: (email: string) => Promise<void>;
+  checkUsernameAvailability: (username: string) => Promise<void>;
 };
 
 export default function AccountForm({
@@ -20,6 +24,10 @@ export default function AccountForm({
   password,
   confirmPassword,
   updateFields,
+  checkEmailAvailability,
+  checkUsernameAvailability,
+  emailAvailable,
+  usernameAvailable,
 }: AccountFormProps) {
   return (
     <FormWrapper title="Signup">
@@ -29,20 +37,28 @@ export default function AccountForm({
         placeholder="Email"
         value={email}
         onChange={(e) => updateFields({ email: e.currentTarget.value })}
+        onBlur={() => checkEmailAvailability(email)}
       />
+      {!emailAvailable && (
+        <div className="login-field-error">Email already exists</div>
+      )}
       <input
         required
         type="text"
         placeholder="Username"
-        minLength={8}
+        minLength={6}
         value={username}
         onChange={(e) => updateFields({ username: e.currentTarget.value })}
+        onBlur={() => checkUsernameAvailability(username)}
       />
+      {!usernameAvailable && (
+        <div className="login-field-error">Username already exists</div>
+      )}
       <input
         required
         type="text"
         placeholder="Display Name"
-        minLength={8}
+        minLength={3}
         value={displayName}
         onChange={(e) => updateFields({ displayName: e.currentTarget.value })}
       />

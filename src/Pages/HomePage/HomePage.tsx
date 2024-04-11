@@ -7,6 +7,7 @@ export default function HomePage({}: Props) {
     <div>
       <Link to="/">HomePage</Link>
       <Link to="/signup">Signup</Link>
+      <Link to="/login">Login</Link>
     </div>
   );
 }
