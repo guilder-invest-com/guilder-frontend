@@ -1,7 +1,9 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import LoginForm from "../../Components/AccountCreationForms/LoginForm/LoginForm";
 import { isValidEmail } from "../../utils/validations";
-import { hashPassword } from "../../utils/hashPassword";
+// import { hashPassword } from "../../utils/hashPassword";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../Context/AuthContext";
 
 type FormData = {
   email: string;
@@ -15,6 +17,16 @@ const INITIAL_DATA: FormData = {
 
 export default function LoginPage() {
   const [data, setData] = useState<FormData>(INITIAL_DATA);
+  const { signIn } = useAuth();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      console.log("User is logged in, navigating to home");
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   function updateFields(fields: Partial<FormData>) {
     setData((prev) => {
@@ -30,19 +42,22 @@ export default function LoginPage() {
       alert("Enter a valid email");
       return;
     }
-    const hashedPassword = hashPassword(data.password);
 
-    const UserLoginData = {
-      email: data.email,
-      password: hashedPassword,
-    };
+    signIn(data.email, data.password);
+    // const hashedPassword = hashPassword(data.password);
 
-    console.log("submit pressed");
+
+    // handleLogin(data.email, data.password).then(() => {
+    //   console.log('login successful, navigating to home')
+    //   navigate('/');
+    // }).catch(error => {
+    //   console.error('login failed: ', error);
+    // });
   }
 
   return (
     <div className="main-content">
-      <form onSubmit={onSubmit}>
+      <form className="login-form" onSubmit={onSubmit}>
         <LoginForm {...data} updateFields={updateFields} />
         <div className="form-buttons">
           <button id="continue-finish-button" type="submit">

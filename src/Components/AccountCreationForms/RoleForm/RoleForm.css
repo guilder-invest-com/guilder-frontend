@@ -56,7 +56,6 @@ hr {
     cursor: pointer;
     transition: background-color 0.2s;
     border-radius: 5px;
-    
 }
 
 .role-label:hover {
@@ -64,6 +63,6 @@ hr {
 } 
 
 .role-radio:checked + .role-label {
-    background-color: #FFF8DE; /* Light yellow background */
-    border-color: #8F8F8F; /* Change the border color on hover and when selected */
+    background-color: #FFF8DE; 
+    border-color: #8F8F8F; 
 }

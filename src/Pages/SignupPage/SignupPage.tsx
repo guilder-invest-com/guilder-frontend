@@ -1,23 +1,81 @@
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import RoleForm from "../../Components/AccountCreationForms/RoleForm/RoleForm";
 import useMultistepForm from "../../useMultistepForm";
 import AccountForm from "../../Components/AccountCreationForms/AccountForm/AccountForm";
 import {
+  getSurveyQuestions,
   isEmailAvailable,
   isUsernameAvailable,
   registerUser,
+  submitSurveyQuestions,
+  updateUserProfile,
 } from "../../Api/api";
 import "./SignupPage.css";
 import { doPasswordsMatch, isValidEmail } from "../../utils/validations";
-import { hashPassword } from "../../utils/hashPassword";
+// import { hashPassword } from "../../utils/hashPassword";
+import ResidenceForm from "../../Components/AccountCreationForms/ResidenceForm/ResidenceForm";
+import UserPersonalInformationForm from "../../Components/AccountCreationForms/UserPersonalInformationForm/UserPersonalInformationForm";
+import UserAddressForm from "../../Components/AccountCreationForms/UserAddressForm/UserAddressForm";
+import PhoneNumberForm from "../../Components/AccountCreationForms/PhoneNumberForm/PhoneNumberForm";
+import KYCQuestionsForm from "../../Components/SurveyQuestionForms/KYCQuestionsForm/KYCQuestionForm";
+import SelectQuestionForm from "../../Components/SurveyQuestionForms/SelectQuestionForms/SelectQuestionForm";
+import KycTupleQuestionForm from "../../Components/SurveyQuestionForms/KycTupleQuestionsForm/KycTupleQuestionForm";
+import { AuthProvider } from "../../Context/AuthContext";
+
+type Question = {
+  id: number;
+  question: string;
+  answer_type: "radio" | "checkbox" | "dropdown" | "select" | "tuple";
+  answers: string[];
+};
+
+export type UpdateUserData = {
+  id?: string;
+  email?: string;
+  username?: string;
+  display_name?: string;
+  password?: string;
+  confirmPassword?: string;
+  role?: string;
+  countryOfTaxResidence?: string;
+  stateOfResidence?: string;
+  citizenshipStatus?: string;
+  firstName?: string;
+  lastName?: string;
+  dateOfBirth?: Date | null;
+  address?: string;
+  address2?: string;
+  city?: string;
+  state?: string;
+  zipcode?: string;
+  phoneNumber?: string;
+  kycResponses?: { [questionId: string]: string };
+  about?: string; 
+};
+
 
 type FormData = {
+  id?: string; 
+  // [key: string]: any;
   email: string;
   username: string;
   displayName: string;
   password: string;
   confirmPassword: string;
   role: string;
+  countryOfTaxResidence: string;
+  stateOfResidence: string;
+  citizenshipStatus: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: Date | null;
+  address: string;
+  address2: string;
+  city: string;
+  state: string;
+  zipcode: string;
+  phoneNumber: string;
+  kycResponses: { [questionId: string]: string   };
 };
 
 const INITIAL_DATA: FormData = {
@@ -27,17 +85,55 @@ const INITIAL_DATA: FormData = {
   password: "",
   confirmPassword: "",
   role: "",
+  countryOfTaxResidence: "",
+  stateOfResidence: "",
+  citizenshipStatus: "",
+  firstName: "",
+  lastName: "",
+  dateOfBirth: null,
+  address: "",
+  address2: "",
+  city: "",
+  state: "",
+  zipcode: "",
+  phoneNumber: "",
+  kycResponses: {},
 };
 
 export default function SignupPage() {
   const [data, setData] = useState<FormData>(INITIAL_DATA);
+  const [kycQuestions, setKycQuestions] = useState<Question[]>([]);
+  const [selectQuestions, setSelectQuestions] = useState<Question[]>([]);
   const [emailAvailable, setEmailAvailable] = useState<boolean>(true);
   const [usernameAvailable, setUsernameAvailable] = useState<boolean>(true);
+  const [kycRadioQuestions, setKycRadioQuestions] = useState<Question[]>([]);
+  // const [kycTupleQuestions, setKyctupleQuestions] = useState<Question[]>([]);
 
+  useEffect(() => {
+    const fetchKycQuestions = async () => {
+      try {
+        const fetchedQuestions = await getSurveyQuestions();
+        const questions: Question[] = fetchedQuestions;
+        setKycQuestions(questions);
+        setKycRadioQuestions(
+          questions.filter((q) => q.answer_type === "radio")
+        );
+        // questions.filter((q, index) => q.answer_type === "radio" && index < 6)
+        // );
+        setSelectQuestions(questions.filter((q) => q.answer_type === "select"));
+        // setKyctupleQuestions(
+        //   questions.filter((q) => q.answer_type === "tuple")
+        // );
+      } catch (error: any) {
+        console.error("Could not fetch KYC questions: ", error);
+      }
+    };
+    fetchKycQuestions();
+  }, []);
 
   const { currentStepIndex, step, isFirstStep, isLastStep, back, next } =
     useMultistepForm([
-      <RoleForm {...data} updateFields={updateFields} />,
+      <RoleForm {...data} updateFields={updateFields} next={() => next()} />,
       <AccountForm
         {...data}
         updateFields={updateFields}
@@ -45,6 +141,30 @@ export default function SignupPage() {
         checkUsernameAvailability={checkUsernameAvailability}
         emailAvailable={emailAvailable}
         usernameAvailable={usernameAvailable}
+      />,
+      <ResidenceForm {...data} updateFields={updateFields} />,
+      <UserPersonalInformationForm {...data} updateFields={updateFields} />,
+      <UserAddressForm {...data} updateFields={updateFields} />,
+      <PhoneNumberForm {...data} updateFields={updateFields} />,
+      <KYCQuestionsForm
+        questions={kycRadioQuestions}
+        formData={data.kycResponses}
+        updateFields={handleKycResponseChange}
+      />,
+      ...selectQuestions.map((question, index) => (
+        <SelectQuestionForm
+          key={index}
+          question={question.question}
+          options={question.answers}
+          questionId={question.id.toString()}
+          selectedOption={data.kycResponses[question.id.toString()] || ""}
+          updateFields={handleKycResponseChange}
+          next={() => next()}
+        />
+      )),
+      <KycTupleQuestionForm
+        selectedOption={data.kycResponses["13"] || ""}
+        updateFields={handleKycResponseChange}
       />,
     ]);
 
@@ -54,16 +174,34 @@ export default function SignupPage() {
     });
   }
 
+  function handleKycResponseChange(changes: { [key: string]: any }) {
+    setData((prev) => {
+      console.log("Incoming changes in SignupPage:", changes);
+      const updatedKycResponses = {
+        ...prev.kycResponses,
+        ...changes,
+      };
+      console.log(updatedKycResponses);
+      return {
+        ...prev,
+        kycResponses: updatedKycResponses,
+      };
+    });
+  }
+
   const lastCheckedEmailRef = useRef("");
 
   async function checkEmailAvailability(email: string) {
+    console.log("inside checkemail");
     const trimmedEmail = email.trim();
     if (!trimmedEmail || trimmedEmail === lastCheckedEmailRef.current) {
       return;
     }
     try {
       const response = await isEmailAvailable(email.trim());
+      console.log("api called");
       setEmailAvailable(response.available);
+      console.log("email available: ", response.available);
       lastCheckedEmailRef.current = trimmedEmail;
     } catch (error: any) {
       console.log("email avail check failed: ", error);
@@ -74,12 +212,15 @@ export default function SignupPage() {
 
   async function checkUsernameAvailability(username: string) {
     const trimmedUsername = username.trim();
-    if (!trimmedUsername || trimmedUsername === lastCheckedUsernameRef.current) {
+    if (
+      !trimmedUsername ||
+      trimmedUsername === lastCheckedUsernameRef.current
+    ) {
       return;
     }
     try {
       const response = await isUsernameAvailable(username);
-      setUsernameAvailable(response.available)
+      setUsernameAvailable(response.available);
       lastCheckedUsernameRef.current = trimmedUsername;
     } catch (error: any) {
       console.log("username avail check failed: ", error);
@@ -89,45 +230,86 @@ export default function SignupPage() {
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
 
-    if (!isLastStep && currentStepIndex === 0 && !data.role) {
-      alert("Please select a role to continue.");
-      return;
-    }
-    if (!isLastStep) return next();
-
-    if (isLastStep) {
+    if (currentStepIndex === 1) {
       if (!isValidEmail(data.email)) {
         alert("Please enter a valid email address.");
         return;
       }
-
       if (!doPasswordsMatch(data.password, data.confirmPassword)) {
         alert("Passwords do not match. Please try again.");
         return;
       }
+    }
 
-      const hashedPassword = hashPassword(data.password);
+    switch (currentStepIndex) {
+      case 0:
+        break;
+      case 1:
+        await handleAccountCreation();
+        break;
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+        await updateUserInfo();
+        break;
+      // case 6:
+      //   await handleKycSubmission();
+      //   break;
+      default:
+        break;
+    }
 
-      const userData = {
-        email: data.email,
-        username: data.username,
-        display_name: data.displayName,
-        password: hashedPassword,
-      };
+    if (!isLastStep) next();
+  }
 
-      // console.log(userData);
-
-      try {
-        const response = await registerUser(userData);
-        console.log("Registration successful", response);
-        alert("Successful Account Creation");
-      } catch (error: any) {
-        console.log("Registration failed: ", error);
-      }
-
-      console.log(userData);
+  async function handleAccountCreation() {
+    const userData = {
+      email: data.email,
+      username: data.username,
+      display_name: data.displayName,
+      password: data.password, 
+    };
+    try {
+      const response = await registerUser(userData);
+      console.log("Registration successful", response);
+      //sign in
+      alert("Successful Account Creation");
+      next();
+    } catch (error: any) {
+      console.error("Registration failed: ", error);
     }
   }
+
+  async function updateUserInfo() {
+    const userData: UpdateUserData = {
+      id: data.id, 
+    };
+    try {
+      const response = await updateUserProfile(userData);
+      console.log("Update successful", response);
+    } catch (error: any) {
+      console.error("Update failed: ", error);
+    }
+  }
+
+  // async function handleKycSubmission() {
+  //   const surveyResponses = Object.entries(data.kycResponses).map(([questionId, answer]) => ({
+  //     questionId: Number(questionId),
+  //     answer: answer,
+  //   }));
+  
+  //   try {
+  //     const response = await submitSurveyQuestions(data.id!, surveyResponses);
+  //     console.log("Survey submission successful", response);
+  //     alert("Survey submitted successfully!");
+  //     next(); 
+  //   } catch (error: any) {
+  //     console.error("Survey submission failed: ", error);
+  //     alert("Failed to submit survey.");
+  //   }
+  // }
+  
 
   return (
     <>
@@ -143,16 +325,20 @@ export default function SignupPage() {
             }}
           ></div>
           {step}
-          <div className="form-buttons">
-            {!isFirstStep && (
-              <button id="back-button" type="button" onClick={back}>
-                Back
-              </button>
-            )}
-            <button id="continue-finish-button" type="submit">
-              {isLastStep ? "Submit" : "Continue"}
-            </button>
-          </div>
+          {!isFirstStep && (
+            <div className="form-buttons">
+              {currentStepIndex !== 0 && currentStepIndex !== 2 && (
+                <button id="back-button" type="button" onClick={back}>
+                  Back
+                </button>
+              )}
+              {!isFirstStep && (
+                <button id="continue-finish-button" type="submit">
+                  {isLastStep ? "Submit" : "Continue"}
+                </button>
+              )}
+            </div>
+          )}
         </form>
       </div>
     </>

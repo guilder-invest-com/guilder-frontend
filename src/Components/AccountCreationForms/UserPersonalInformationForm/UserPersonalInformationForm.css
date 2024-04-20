@@ -1,0 +1,25 @@
+/* Styling the input */
+.react-datepicker__input-container input {
+    padding: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.react-datepicker__input-container {
+    position: relative;
+;
+  }
+  
+  /* Add custom styles to the SVG icon itself */
+  .react-datepicker__input-container .react-datepicker__calendar-icon {
+    position: absolute;
+    right: 5px; 
+    top: 50%;
+    transform: translateY(-50%); 
+    z-index: 0; /* Make sure it's above any other positioned elements */
+  }
+  
+  /* Make sure there is padding on the right of the input so text doesn't overlap the icon */
+  .react-datepicker__input-container input {
+    padding-right: 30px; /* Adjust as necessary to avoid overlapping with the icon */
+  }

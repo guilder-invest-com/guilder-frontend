@@ -1,0 +1,26 @@
+.question-container {
+    margin-bottom: 20px; /* Adjust the spacing between each question */
+  }
+  
+  .question-text {
+    margin-bottom: 10px; /* Spacing between the question and the radio buttons */
+    font-size: .85rem;
+  }
+  
+  .radio-group {
+    display: flex;
+    gap: .5rem;
+    flex-direction: row; /* Stack radio buttons vertically */
+  }
+  
+  .radio-label {
+    margin-bottom: 5px; /* Spacing between each radio button */
+    font-size: .85rem;
+
+  }
+
+  .radio-label input {
+    margin-right: 5px; /* Adjust the value to your preference */
+  }
+  
+  

@@ -1,0 +1,26 @@
+.select-question-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+     
+  .select-question-text {
+    margin-top: 0;
+    padding-bottom: 1rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 500;
+  }
+  
+  .option {
+    padding: .7rem 5px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-radius: 5px;
+  }
+  
+  .option.selected,
+  .option:hover {
+    background-color: #FFF8DE;
+  }
+  

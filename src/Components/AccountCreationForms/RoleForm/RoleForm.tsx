@@ -7,9 +7,18 @@ type RoleData = {
 
 type RoleFormProps = RoleData & {
   updateFields: (fields: Partial<RoleData>) => void;
+  next: () => void;
 };
 
-export default function RoleForm({ updateFields, role }: RoleFormProps) {
+export default function RoleForm({ updateFields, role, next }: RoleFormProps) {
+  const handleRoleSelect = (newRole: string) => {
+    if (role !==  newRole) {
+      updateFields({ role: newRole });
+    }
+    next();
+    console.log("Next called from roleform = ", newRole);
+  };
+
   return (
     <FormWrapper>
       <div className="role-question">
@@ -22,17 +31,18 @@ export default function RoleForm({ updateFields, role }: RoleFormProps) {
         <hr />
         <div>
           <input
+            readOnly
             required
             type="radio"
             id="invest"
             name="role"
             value="invest"
             className="role-radio"
-            onChange={(e) => updateFields({ role: e.target.value })}
+            onClick={() => handleRoleSelect("invest")}
             checked={role === "invest"}
           ></input>
           <label htmlFor="invest" className="role-label">
-            I want to invest{" "}
+            I want to invest
             <span>
               I want to find a great portfolio on Guilder that I can invest in
             </span>
@@ -41,13 +51,14 @@ export default function RoleForm({ updateFields, role }: RoleFormProps) {
         <hr />
         <div>
           <input
+            readOnly
             type="radio"
             id="manager"
             name="role"
             value="manager"
             className="role-radio"
-            onChange={(e) => updateFields({ role: e.target.value })}
-            checked={role === 'manager'}
+            onClick = {() => handleRoleSelect("manager")}
+            checked={role === "manager"}
           ></input>
           <label htmlFor="manager" className="role-label">
             I want to create and manage a model portfolio
