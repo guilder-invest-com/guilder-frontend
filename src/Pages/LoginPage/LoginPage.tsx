@@ -1,9 +1,9 @@
 import { FormEvent, useEffect, useState } from "react";
 import LoginForm from "../../Components/AccountCreationForms/LoginForm/LoginForm";
 import { isValidEmail } from "../../utils/validations";
-// import { hashPassword } from "../../utils/hashPassword";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../Context/AuthContext";
+import Navbar from "../../Components/Navbar/Navbar";
 
 type FormData = {
   email: string;
@@ -29,13 +29,11 @@ export default function LoginPage() {
   }, [user, navigate]);
 
   function updateFields(fields: Partial<FormData>) {
-    setData((prev) => {
-      return { ...prev, ...fields };
-    });
+    setData((prev) => ({ ...prev, ...fields }));
     console.log(fields);
   }
 
-  function onSubmit(e: FormEvent) {
+  async function onSubmit(e: FormEvent) {
     e.preventDefault();
 
     if (!isValidEmail(data.email)) {
@@ -43,28 +41,26 @@ export default function LoginPage() {
       return;
     }
 
-    signIn(data.email, data.password);
-    // const hashedPassword = hashPassword(data.password);
-
-
-    // handleLogin(data.email, data.password).then(() => {
-    //   console.log('login successful, navigating to home')
-    //   navigate('/');
-    // }).catch(error => {
-    //   console.error('login failed: ', error);
-    // });
+    try {
+      await signIn(data.email, data.password);
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   }
 
   return (
-    <div className="main-content">
-      <form className="login-form" onSubmit={onSubmit}>
-        <LoginForm {...data} updateFields={updateFields} />
-        <div className="form-buttons">
-          <button id="continue-finish-button" type="submit">
-            Login
-          </button>
-        </div>
-      </form>
+    <div>
+      <Navbar />
+      <div className="main-content">
+        <form className="login-form" onSubmit={onSubmit}>
+          <LoginForm {...data} updateFields={updateFields} />
+          <div className="form-buttons">
+            <button id="continue-finish-button" type="submit">
+              Login
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

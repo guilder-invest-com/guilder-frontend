@@ -1,7 +1,8 @@
-// AuthProvider.tsx
 import { createContext, useState, ReactNode, FC, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserProfileData, handleLogin } from "../Api/api";
+import axiosInstance from "../Api/axiosInstance";
+import Cookies from 'js-cookie';
 
 type UserType = {
   id: string;
@@ -25,8 +26,8 @@ type UserType = {
 };
 
 type AuthContextType = {
-  user: { email: string } | null;
-  signIn: (email: string, password: string) => void;
+  user: UserType | null;
+  signIn: (email: string, password: string) => Promise<void>;
   signOut: () => void;
 };
 
@@ -53,25 +54,51 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   });
   const navigate = useNavigate();
 
+  // const signIn = async (email: string, password: string) => {
+  //   try {
+  //     const loginResponse = await handleLogin(email, password);
+  //     if (loginResponse.data.message === "Login successful") {
+  //       const setCookieHeader = loginResponse.headers['set-cookie'];
+  //       console.log(loginResponse.headers['set-cookie']);
+  //       if (setCookieHeader && setCookieHeader.length > 0) {
+  //         console.log("Cookies are present in the response headers");
+  //         // Manually set the cookie using js-cookie
+  //         Cookies.set('connect.sid', setCookieHeader[0], { path: '/' });
+  //       }
+
+  //       const profileData = await getUserProfileData(); 
+  //       if (profileData) {
+  //         localStorage.setItem("user", JSON.stringify(profileData)); 
+  //         setUser(profileData);  
+  //         navigate("/");  
+  //       }
+  //     } else {
+  //       console.error("Login failed or no user data received");
+  //     }
+  //   } catch (error) {
+  //     console.error("Login process failed:", error);
+  //   }
+  // };
+
   const signIn = async (email: string, password: string) => {
     try {
-      console.log("inside try")
       const loginResponse = await handleLogin(email, password);
-      console.log("login response =", loginResponse);
-      if (loginResponse.user) {
-        console.log("inside loginResponse.user");
+      if (loginResponse.data.message === "Login successful") {
         const profileData = await getUserProfileData(); 
-        console.log(profileData);
         if (profileData) {
-          setUser(profileData);
-          localStorage.setItem("user", JSON.stringify(profileData));
-          navigate("/"); 
+          localStorage.setItem("user", JSON.stringify(profileData)); 
+          setUser(profileData);  
+          navigate("/");  
         }
+      } else {
+        console.error("Login failed or no user data received");
       }
     } catch (error) {
-      console.error("Login failed: ", error);
+      console.error("Login process failed:", error);
     }
   };
+
+
 
   const signOut = () => {
     setUser(null);

@@ -21,6 +21,7 @@ import KYCQuestionsForm from "../../Components/SurveyQuestionForms/KYCQuestionsF
 import SelectQuestionForm from "../../Components/SurveyQuestionForms/SelectQuestionForms/SelectQuestionForm";
 import KycTupleQuestionForm from "../../Components/SurveyQuestionForms/KycTupleQuestionsForm/KycTupleQuestionForm";
 import { AuthProvider } from "../../Context/AuthContext";
+import Navbar from "../../Components/Navbar/Navbar";
 
 type Question = {
   id: number;
@@ -253,9 +254,9 @@ export default function SignupPage() {
       case 5:
         await updateUserInfo();
         break;
-      // case 6:
-      //   await handleKycSubmission();
-      //   break;
+      case 6:
+        await handleKycSubmission();
+        break;
       default:
         break;
     }
@@ -293,27 +294,27 @@ export default function SignupPage() {
     }
   }
 
-  // async function handleKycSubmission() {
-  //   const surveyResponses = Object.entries(data.kycResponses).map(([questionId, answer]) => ({
-  //     questionId: Number(questionId),
-  //     answer: answer,
-  //   }));
+  async function handleKycSubmission() {
+    const surveyResponses = Object.entries(data.kycResponses).map(([questionId, answer]) => ({
+      questionId: Number(questionId),
+      answer: answer,
+    }));
   
-  //   try {
-  //     const response = await submitSurveyQuestions(data.id!, surveyResponses);
-  //     console.log("Survey submission successful", response);
-  //     alert("Survey submitted successfully!");
-  //     next(); 
-  //   } catch (error: any) {
-  //     console.error("Survey submission failed: ", error);
-  //     alert("Failed to submit survey.");
-  //   }
-  // }
+    try {
+      const response = await submitSurveyQuestions(data.id!, surveyResponses);
+      console.log("Survey submission successful", response);
+      alert("Survey submitted successfully!");
+      next(); 
+    } catch (error: any) {
+      console.error("Survey submission failed: ", error);
+      alert("Failed to submit survey.");
+    }
+  }
   
 
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <div className="main-content">
         <form onSubmit={onSubmit}>
           <div
