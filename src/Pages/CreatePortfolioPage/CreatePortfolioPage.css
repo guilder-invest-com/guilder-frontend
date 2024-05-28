@@ -1,0 +1,135 @@
+:root {
+    --navbar-height: 0rem;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Centering content vertically */
+    min-height: 100vh;
+    padding: 1rem;
+    box-sizing: border-box;
+    background-color: #F8F8F8;
+    margin-top: var(--navbar-height);
+}
+
+.create-portfolio-form-header {
+    margin-bottom: 1rem;
+    margin-top: 0;
+}
+
+.create-portfolio-form {
+    display: flex;
+    width: 100%;
+    max-width: 700px; /* Make it responsive */
+    flex-direction: column;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.create-portfolio-form-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.create-portfolio-form-items input {
+    border-radius: 5px;
+    border-color: #8F8F8F;
+    color: #8F8F8F;
+}
+
+#portfolioDescription {
+    resize: none;
+    padding-top: 5px;
+    padding-left: 5px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    border-color: #8F8F8F;
+    border-radius: 5px;
+}
+
+.create-portfolio-form-items textarea:focus {
+    border-color: #000; 
+    outline: none; 
+}
+
+.create-portfolio-slider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.create-portfolio-slider p {
+    font-size: .9rem;
+    color: #8F8F8F;
+    width: 18%;
+    white-space: nowrap;
+}
+
+.horizontal-slider {
+    flex-grow: 1; 
+    margin-top: 5px;
+    height: 2px;
+    background: #000;
+}
+
+.example-thumb {
+    height: 12px;
+    width: 12px;
+    background-color: #000;
+    border-radius: 50%;
+    cursor: grab;
+    margin-top: -5px;
+}
+
+.example-track {
+    background: #000;
+}
+
+.slider-value {
+    width: 3.5rem; 
+    background-color: #E8E8E8;
+    color: black;
+    padding-left: 5px;
+    padding-right: 2px;
+    padding-bottom: 5px;
+    font-weight: bold;
+    border-radius: 5px;
+    text-align: center; 
+}
+
+.create-portfolio-form-continue-button {
+    padding: 10px 5px;
+    border-style: none;
+    background-color: #FECC1D;
+    border-radius: 5px;
+    font-weight: 500;
+    width: 20%;
+    font-size: 15px;
+}
+
+.create-portfolio-form-buttons {
+    padding-top: 1.2rem;
+    display: flex;
+    gap: .5rem;
+}
+
+#back-button {
+    padding: 6px 16px;
+    border-style: none;
+    background-color: #dadada;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+#continue-finish-button {
+    padding: 6px 16px;
+    border-style: none;
+    background-color: #FECC1D;
+    border-radius: 5px;
+    font-weight: 500;
+}
+

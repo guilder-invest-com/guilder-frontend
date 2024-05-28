@@ -2,7 +2,7 @@ import FormWrapper from "../FormWrapper/FormWrapper";
 import "./RoleForm.css";
 
 type RoleData = {
-  role: string;
+  account_type: string;
 };
 
 type RoleFormProps = RoleData & {
@@ -10,10 +10,10 @@ type RoleFormProps = RoleData & {
   next: () => void;
 };
 
-export default function RoleForm({ updateFields, role, next }: RoleFormProps) {
+export default function RoleForm({ updateFields, account_type, next }: RoleFormProps) {
   const handleRoleSelect = (newRole: string) => {
-    if (role !==  newRole) {
-      updateFields({ role: newRole });
+    if (account_type !==  newRole) {
+      updateFields({ account_type: newRole });
     }
     next();
     console.log("Next called from roleform = ", newRole);
@@ -39,7 +39,7 @@ export default function RoleForm({ updateFields, role, next }: RoleFormProps) {
             value="invest"
             className="role-radio"
             onClick={() => handleRoleSelect("invest")}
-            checked={role === "invest"}
+            checked={account_type === "invest"}
           ></input>
           <label htmlFor="invest" className="role-label">
             I want to invest
@@ -58,7 +58,7 @@ export default function RoleForm({ updateFields, role, next }: RoleFormProps) {
             value="manager"
             className="role-radio"
             onClick = {() => handleRoleSelect("manager")}
-            checked={role === "manager"}
+            checked={account_type === "manager"}
           ></input>
           <label htmlFor="manager" className="role-label">
             I want to create and manage a model portfolio

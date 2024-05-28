@@ -1,0 +1,76 @@
+.portfolio-summary {
+    padding: 1rem 0rem;
+  }
+  
+  .portfolio-field {
+    margin-bottom: 1rem;
+  }
+  
+  .portfolio-field label {
+    display: block;
+    font-size: .7rem;
+    margin-bottom: 0.25rem;
+    color: #464646;
+  }
+  
+  .portfolio-field p {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .portfolio-field hr {
+    margin-top: 1rem; /* Adjust this value to add space above the hr */
+    margin-bottom: 0.5rem; 
+  }
+  
+  .portfolio-holdings {
+    margin-top: 1rem;
+  }
+  
+  .portfolio-holdings h5 {
+    margin-bottom: .5rem;
+    font-weight: normal;
+    color: #464646;
+  }
+  
+  .holding-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    /* border-bottom: 1px solid #e0e0e0; */
+  }
+  
+  .holding-item:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .holding-item:nth-child(odd) {
+    background-color: #ffffff;
+  }
+  
+  .holding-ticker,
+  .holding-weight {
+    flex: 1;
+    padding: 0 0rem;
+    text-align: left;
+    color: black;
+  }
+  
+  .holding-weight {
+    text-align: right;
+  }
+  
+  .create-button {
+    margin-top: 2rem;
+    padding: 0.5rem 1rem;
+    background-color: #ffc107;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .create-button:hover {
+    background-color: #e0a800;
+  }
+  

@@ -8,11 +8,7 @@ export default function HomePage({}: Props) {
   return (
     <div>
       <Navbar />
-      <div>
-        <Link to="/">HomePage</Link>
-        <Link to="/signup">Signup</Link>
-        <Link to="/login">Login</Link>
-      </div>
+      <div className="main-content"></div>
     </div>
   );
 }

@@ -42,7 +42,7 @@ export default function LoginPage() {
     }
 
     try {
-      await signIn(data.email, data.password);
+      await signIn(data.email, data.password, true);
     } catch (error) {
       console.error("Login failed:", error);
     }

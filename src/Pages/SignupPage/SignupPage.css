@@ -4,15 +4,16 @@
     box-sizing: border-box; 
   }
 
-.main-content {
+  .main-content {
     display: flex;
     flex-direction: column;
-    align-items: center; 
-    justify-content: center; 
-    min-height: 100vh; 
+    align-items: center;
+    justify-content: center; /* Centering content vertically */
+    min-height: calc(100vh - var(--navbar-height) - 8rem); /* Adjust for additional padding */
     padding: 1rem;
     box-sizing: border-box;
     background-color: #F8F8F8;
+    margin-top: var(--navbar-height);
 }
 
 form {
@@ -35,7 +36,7 @@ form {
 
 }
 
-#back-button {
+.back-button {
     padding: 6px 16px;
     border-style: none;
     background-color: #dadada;
@@ -43,7 +44,7 @@ form {
     font-weight: 500;
 }
 
-#continue-finish-button {
+.continue-finish-button {
     padding: 6px 16px;
     border-style: none;
     background-color: #FECC1D;

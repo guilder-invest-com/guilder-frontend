@@ -8,7 +8,7 @@ type UserType = {
   id: string;
   email: string;
   username: string;
-  displayName: string;
+  display_name: string;
   country_of_tax_residence: string | null;
   state_of_residence: string | null;
   citizenship_status: string | null;
@@ -27,14 +27,16 @@ type UserType = {
 
 type AuthContextType = {
   user: UserType | null;
-  signIn: (email: string, password: string) => Promise<void>;
+  signIn: (email: string, password: string, shouldNavigate: boolean) => Promise<void>;
   signOut: () => void;
+  setUser: (user: UserType | null) => void; // Add setUser function type
 };
 
 const defaultAuthContext: AuthContextType = {
   user: null,
   signIn: async () => {},
   signOut: () => {},
+  setUser: () => {}, 
 };
 
 const AuthContext = createContext<AuthContextType>(defaultAuthContext);
@@ -80,7 +82,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   //   }
   // };
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string, shouldNavigate: boolean) => {
     try {
       const loginResponse = await handleLogin(email, password);
       if (loginResponse.data.message === "Login successful") {
@@ -88,7 +90,9 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         if (profileData) {
           localStorage.setItem("user", JSON.stringify(profileData)); 
           setUser(profileData);  
-          navigate("/");  
+          if (shouldNavigate) {
+            navigate("/");  
+          }
         }
       } else {
         console.error("Login failed or no user data received");
@@ -106,7 +110,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     navigate("/login");
   };
 
-  const value = { user, signIn, signOut };
+  const value = { user, signIn, signOut, setUser };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

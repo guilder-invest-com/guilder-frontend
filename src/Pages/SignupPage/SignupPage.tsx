@@ -20,7 +20,7 @@ import PhoneNumberForm from "../../Components/AccountCreationForms/PhoneNumberFo
 import KYCQuestionsForm from "../../Components/SurveyQuestionForms/KYCQuestionsForm/KYCQuestionForm";
 import SelectQuestionForm from "../../Components/SurveyQuestionForms/SelectQuestionForms/SelectQuestionForm";
 import KycTupleQuestionForm from "../../Components/SurveyQuestionForms/KycTupleQuestionsForm/KycTupleQuestionForm";
-import { AuthProvider } from "../../Context/AuthContext";
+import { useAuth } from "../../Context/AuthContext";
 import Navbar from "../../Components/Navbar/Navbar";
 
 type Question = {
@@ -37,21 +37,21 @@ export type UpdateUserData = {
   display_name?: string;
   password?: string;
   confirmPassword?: string;
-  role?: string;
-  countryOfTaxResidence?: string;
-  stateOfResidence?: string;
-  citizenshipStatus?: string;
+  account_type?: string;
+  country_of_tax_residence?: string;
+  state_of_residence?: string;
+  citizenship_status?: string;
   firstName?: string;
   lastName?: string;
-  dateOfBirth?: Date | null;
+  dob?: Date | null;
   address?: string;
-  address2?: string;
+  apt?: string;
   city?: string;
   state?: string;
-  zipcode?: string;
-  phoneNumber?: string;
-  kycResponses?: { [questionId: string]: string };
+  zip?: number;
+  phone?: string;
   about?: string; 
+  kycResponses?: { [questionId: string]: string };
 };
 
 
@@ -63,7 +63,7 @@ type FormData = {
   displayName: string;
   password: string;
   confirmPassword: string;
-  role: string;
+  account_type: string;
   countryOfTaxResidence: string;
   stateOfResidence: string;
   citizenshipStatus: string;
@@ -76,6 +76,7 @@ type FormData = {
   state: string;
   zipcode: string;
   phoneNumber: string;
+  about: string;
   kycResponses: { [questionId: string]: string   };
 };
 
@@ -85,7 +86,7 @@ const INITIAL_DATA: FormData = {
   displayName: "",
   password: "",
   confirmPassword: "",
-  role: "",
+  account_type: "",
   countryOfTaxResidence: "",
   stateOfResidence: "",
   citizenshipStatus: "",
@@ -98,10 +99,12 @@ const INITIAL_DATA: FormData = {
   state: "",
   zipcode: "",
   phoneNumber: "",
+  about: "",
   kycResponses: {},
 };
 
 export default function SignupPage() {
+  const { signIn } = useAuth();
   const [data, setData] = useState<FormData>(INITIAL_DATA);
   const [kycQuestions, setKycQuestions] = useState<Question[]>([]);
   const [selectQuestions, setSelectQuestions] = useState<Question[]>([]);
@@ -247,6 +250,7 @@ export default function SignupPage() {
         break;
       case 1:
         await handleAccountCreation();
+        await updateUserInfo();
         break;
       case 2:
       case 3:
@@ -255,6 +259,24 @@ export default function SignupPage() {
         await updateUserInfo();
         break;
       case 6:
+        await handleKycSubmission();
+        break;
+      case 7:
+        await handleKycSubmission();
+        break;
+      case 8:
+        await handleKycSubmission();
+        break;
+      case 9:
+        await handleKycSubmission();
+        break;
+      case 10:
+        await handleKycSubmission();
+        break;
+      case 11:
+        await handleKycSubmission();
+        break;
+      case 12:
         await handleKycSubmission();
         break;
       default:
@@ -274,9 +296,14 @@ export default function SignupPage() {
     try {
       const response = await registerUser(userData);
       console.log("Registration successful", response);
-      //sign in
       alert("Successful Account Creation");
-      next();
+      try {
+        await signIn(userData.email, userData.password, false);
+        console.log("User signed in");
+      } catch (error: any) {
+        console.log(`could not ${data.email} sign user in`);
+      }
+      // next();
     } catch (error: any) {
       console.error("Registration failed: ", error);
     }
@@ -285,6 +312,22 @@ export default function SignupPage() {
   async function updateUserInfo() {
     const userData: UpdateUserData = {
       id: data.id, 
+      email: data.email,
+      username: data.username,
+      country_of_tax_residence: data.countryOfTaxResidence,
+      state_of_residence: data.stateOfResidence,
+      citizenship_status: data.citizenshipStatus,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      dob: data.dateOfBirth,
+      address: data.address,
+      apt: data.address2,
+      city: data.city,
+      state: data.state,
+      zip: Number(data.zipcode.replace(/,/g,"")),
+      phone: data.phoneNumber,
+      about: data.about,
+      account_type: data.account_type,
     };
     try {
       const response = await updateUserProfile(userData);
@@ -301,10 +344,10 @@ export default function SignupPage() {
     }));
   
     try {
-      const response = await submitSurveyQuestions(data.id!, surveyResponses);
+      const response = await submitSurveyQuestions(surveyResponses);
       console.log("Survey submission successful", response);
       alert("Survey submitted successfully!");
-      next(); 
+      // next(); 
     } catch (error: any) {
       console.error("Survey submission failed: ", error);
       alert("Failed to submit survey.");
@@ -329,12 +372,12 @@ export default function SignupPage() {
           {!isFirstStep && (
             <div className="form-buttons">
               {currentStepIndex !== 0 && currentStepIndex !== 2 && (
-                <button id="back-button" type="button" onClick={back}>
+                <button className="back-button" type="button" onClick={back}>
                   Back
                 </button>
               )}
               {!isFirstStep && (
-                <button id="continue-finish-button" type="submit">
+                <button className="continue-finish-button" type="submit">
                   {isLastStep ? "Submit" : "Continue"}
                 </button>
               )}

@@ -13,8 +13,8 @@
     top: 0;
     left: 0;
     width: 100%;
-    background-color: white; /* Ensure the background covers content behind it */
-    z-index: 1000; /* Ensure it stays on top */
+    background-color: white; 
+    z-index: 1000; 
   }
   
   .navbar div:nth-child(1) {
@@ -51,4 +51,29 @@
     border-style: none;
     border-radius: 5px;
   }
+
+  .signout-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .signout-button > p {
+    font-size: 1rem;
+  }
+
+  .signout-button > p:hover {
+    text-decoration: underline;
+  }
   
+  .navbar-items > li > a {
+    text-decoration: none;
+    color: black;
+  }
+
+  .navbar-items > li > a:hover {
+    text-decoration: underline;
+  }

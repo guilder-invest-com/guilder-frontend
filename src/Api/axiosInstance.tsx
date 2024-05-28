@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BACKEND_API_URL = "http://dev.guilder-invest.com:3500";
+const BACKEND_API_URL = "https://backend.guilder-invest.com:8443";
 
 const axiosInstance = axios.create({
   baseURL: BACKEND_API_URL,
