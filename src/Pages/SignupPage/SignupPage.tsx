@@ -119,6 +119,7 @@ export default function SignupPage() {
         const fetchedQuestions = await getSurveyQuestions();
         const questions: Question[] = fetchedQuestions;
         setKycQuestions(questions);
+        console.log(kycQuestions);
         setKycRadioQuestions(
           questions.filter((q) => q.answer_type === "radio")
         );

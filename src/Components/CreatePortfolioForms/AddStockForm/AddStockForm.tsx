@@ -123,7 +123,7 @@ export default function AddStockForm({
             {selectedStocks.map((stock) => (
               <tr key={stock.ticker}>
                 <td className="remove-button">
-                  <button onClick={() => removeStock(stock.ticker)}>x</button>
+                  <button onClick={() => removeStock(stock.ticker)}>&#10006</button>
                 </td>
                 <td>{stock.ticker}</td>
                 <td>{stock.name}</td>

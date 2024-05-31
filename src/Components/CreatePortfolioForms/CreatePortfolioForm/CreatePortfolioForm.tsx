@@ -1,4 +1,3 @@
-import React from "react";
 import FormWrapper from "../../AccountCreationForms/FormWrapper/FormWrapper";
 import ReactSlider from "react-slider";
 import "./CreatePortfolioForm.css";

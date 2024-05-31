@@ -4,17 +4,10 @@ import { UpdateUserData } from "../Pages/SignupPage/SignupPage";
 import Cookies from "js-cookie";
 import { Stock } from "../Pages/CreatePortfolioPage/CreatePortfolioPage";
 
-const BACKEND_API_URL = "https://backend.guilder-invest.com:3500";
-
 type UserData = {
   email: string;
   username: string;
   display_name: string;
-  password: string;
-};
-
-type LoginData = {
-  email: string;
   password: string;
 };
 

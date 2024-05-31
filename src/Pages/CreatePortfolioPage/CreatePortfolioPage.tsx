@@ -4,7 +4,7 @@ import "./CreatePortfolioPage.css";
 import useMultistepForm from "../../useMultistepForm";
 import CreatePortfolioForm from "../../Components/CreatePortfolioForms/CreatePortfolioForm/CreatePortfolioForm";
 import AddStockForm from "../../Components/CreatePortfolioForms/AddStockForm/AddStockForm";
-import { fetchAllStocks, fetchStockPrice, createPortfolio, CreatePortfolioFormData } from "../../Api/api";
+import { fetchAllStocks, fetchStockPrice, createPortfolio } from "../../Api/api";
 import CreatePortfolioReviewForm from "../../Components/CreatePortfolioForms/PortfolioReviewForm/CreatePortfolioReviewForm";
 import { useAuth } from "../../Context/AuthContext"; // Import useAuth
 
@@ -32,7 +32,7 @@ const INITIAL_DATA: FormData = {
 };
 
 export default function CreatePortfolioPage() {
-  const { user } = useAuth(); 
+  useAuth(); 
   const [data, setData] = useState<FormData>(INITIAL_DATA);
   const [stocks, setStocks] = useState<Stock[]>([]);
   const [loading, setLoading] = useState<boolean>(true);

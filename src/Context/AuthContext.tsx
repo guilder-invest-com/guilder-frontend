@@ -1,8 +1,6 @@
 import { createContext, useState, ReactNode, FC, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserProfileData, handleLogin } from "../Api/api";
-import axiosInstance from "../Api/axiosInstance";
-import Cookies from 'js-cookie';
 
 type UserType = {
   id: string;
