@@ -106,7 +106,7 @@ export default function CreatePortfolioPage() {
     }));
   }
 
-  const { currentStepIndex, step, isFirstStep, isLastStep, back, next } =
+  const { step, isFirstStep, isLastStep, back, next } =
     useMultistepForm([
       <CreatePortfolioForm {...data} updateFields={updateFields} />,
       <AddStockForm
