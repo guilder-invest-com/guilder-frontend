@@ -1,7 +1,5 @@
-// src/Api/api.js
 import axiosInstance from "./axiosInstance";
 import { UpdateUserData } from "../Pages/SignupPage/SignupPage";
-import Cookies from "js-cookie";
 import { Stock } from "../Pages/CreatePortfolioPage/CreatePortfolioPage";
 
 type UserData = {
@@ -144,7 +142,6 @@ export async function fetchStockPrice(ticker: string) {
     throw error;
   }
 }
-// api.js or api.ts
 
 export async function createPortfolio(portfolioData: CreatePortfolioFormData) {
   try {
@@ -152,6 +149,26 @@ export async function createPortfolio(portfolioData: CreatePortfolioFormData) {
     if (response.status !== 200) {
       throw new Error("Failed to create portfolio");
     }
+    return response.data;
+  } catch (error: any) {
+    console.log("Request failed", error.response ? error.response.data : error);
+    throw error;
+  }
+}
+export async function getAllPortfolios() {
+  try {
+    const response = await axiosInstance.get(`/portfolios`);
+    return response.data;
+  } catch (error: any) {
+    console.log("Request failed", error.response ? error.response.data : error);
+    throw error;
+  }
+}
+export async function getUserPortfolios(userId: string) {
+  try {
+    const response = await axiosInstance.get(`/portfolios`, {
+      params: { userId }
+    });
     return response.data;
   } catch (error: any) {
     console.log("Request failed", error.response ? error.response.data : error);

@@ -1,0 +1,91 @@
+.myPortfolios-main-content {
+    margin-top: var(--navbar-height);
+    padding: 2rem;
+    background-color: #f8f9fa;
+    min-height: calc(100vh - var(--navbar-height));
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 7rem;
+}
+
+.myPortfolios-container {
+    width: 80%;
+    max-width: 1500px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.myPortfolios-header-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 1rem;
+    margin-bottom: -1.5rem;
+}
+
+.myPortfolios-header-row h4 {
+    font-weight: 300;
+    text-align: left;
+}
+
+.myPortfolios-header-row p {
+    background-color: #E8E8E8;
+    font-size: .9rem;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.myPortfolios-table {
+    width: 98%;
+    margin: auto;
+}
+
+.myPortfolios-table th {
+    text-align: left;
+}
+
+.myPortfolios-table td {
+    text-align: left;
+}
+
+.myPortfolios-table .center {
+    text-align: center;
+}
+
+
+.myPortfolios-add-portfolio-button {
+    width: 98%;
+    margin: auto;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    font-size: 1rem;
+    color: black;
+    background-color: #FFC600;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    /* box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); */
+}
+
+.myPortfolios-add-portfolio-button:hover {
+    background-color: rgb(255, 211, 54);
+}
+
+.myPortfolios-table th,
+.myPortfolios-table td {
+    padding: 0.75rem;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

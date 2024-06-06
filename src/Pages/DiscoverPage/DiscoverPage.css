@@ -1,0 +1,125 @@
+.discover-main-content {
+    margin-top: var(--navbar-height);
+    padding: 2rem;
+    background-color: #f8f9fa;
+    min-height: calc(100vh - var(--navbar-height));
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 7rem;
+}
+
+.discover-container {
+    width: 80%;
+    max-width: 1500px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.discover-header-row {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: -5px;
+    padding-bottom: 0;
+}
+
+.discover-header-row > input {
+    width: 35%;
+}
+
+.discover-search {
+    flex: 1;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.discover-filters {
+    display: flex;
+    gap: 1rem;
+}
+
+.discover-filters p {
+    margin: 0;
+    padding: 0.5rem 1rem;
+    background-color: #E8E8E8;
+    color: black;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.discover-filters p:hover {
+    background-color: #aeaeae;
+}
+
+.discover-table-container {
+    width: 100%;
+    margin-top: -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.discover-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.discover-table th,
+.discover-table td {
+    padding: 0.75rem;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1rem;
+}
+
+.discover-table th.ticker,
+.discover-table td.ticker {
+    width: 10%;
+}
+
+.discover-table th.name,
+.discover-table td.name {
+    width: 20%;
+}
+
+.discover-table th.manager,
+.discover-table td.manager {
+    width: 15%;
+}
+
+.discover-table th.small,
+.discover-table td.small {
+    width: 10%;
+}
+
+.discover-table th.investors,
+.discover-table td.investors {
+    width: 10%;
+    text-align: center;
+}
+
+.seven-day-return {
+    color: #00DB23;
+}
+
+.even-row {
+    background-color: white;
+}
+
+.odd-row {
+    background-color: #f9f9f9;
+}

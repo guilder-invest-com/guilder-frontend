@@ -6,6 +6,8 @@ import SignupPage from "./Pages/SignupPage/SignupPage";
 import LoginPage from "./Pages/LoginPage/LoginPage";
 import ProfilePage from "./Pages/ProfilePage/ProfilePage";
 import CreatePortfolioPage from "./Pages/CreatePortfolioPage/CreatePortfolioPage";
+import DiscoverPage from "./Pages/DiscoverPage/DiscoverPage";
+import MyPortfoliosPage from "./Pages/MyPortfoliosPage/MyPortfoliosPage";
 // import { Navbar } from "react-bootstrap";
 
 function App() {
@@ -16,6 +18,8 @@ function App() {
       <Route path="login" element={<LoginPage />} />
       <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
       <Route path="/create" element={<ProtectedRoute><CreatePortfolioPage /></ProtectedRoute>} />
+      <Route path="/discover" element={<ProtectedRoute><DiscoverPage /></ProtectedRoute>} />
+      <Route path="/user/portfolios" element={<ProtectedRoute><MyPortfoliosPage /></ProtectedRoute>} />
       // ... other routes
     </Routes>
   );

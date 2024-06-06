@@ -6,6 +6,8 @@ import LoginPage from "../Pages/LoginPage/LoginPage";
 import ProtectedRoute from "../Components/ProtectedRoute";
 import ProfilePage from "../Pages/ProfilePage/ProfilePage";
 import CreatePortfolioPage from "../Pages/CreatePortfolioPage/CreatePortfolioPage";
+import DiscoverPage from "../Pages/DiscoverPage/DiscoverPage";
+import MyPortfoliosPage from "../Pages/MyPortfoliosPage/MyPortfoliosPage";
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +37,22 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <CreatePortfolioPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "myPortfolios",
+        element: (
+          <ProtectedRoute>
+            <MyPortfoliosPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "discover",
+        element: (
+          <ProtectedRoute>
+            <DiscoverPage />
           </ProtectedRoute>
         ),
       },

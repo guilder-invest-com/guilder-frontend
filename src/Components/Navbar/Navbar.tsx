@@ -15,9 +15,11 @@ function Navbar({}: Props) {
           <li>
             <Link to="/">Home</Link>
           </li>
-          <li>Discover</li>
           <li>
-            <Link to="/create">Create</Link>
+            <Link to="/discover">Discover</Link>
+          </li>
+          <li>
+            <Link to="/user/portfolios">My Portfolios</Link>
           </li>
           <li>Help</li>
         </ul>
