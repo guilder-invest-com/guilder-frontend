@@ -1,0 +1,13 @@
+.uppercase-input {
+    text-transform: uppercase;
+}
+  
+.uppercase-input::placeholder {
+    text-transform: none;
+    color: gray; 
+}
+
+.create-portfolio-form-items > input {
+    color: black;
+}
+

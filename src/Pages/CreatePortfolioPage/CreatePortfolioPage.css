@@ -133,3 +133,10 @@
     font-weight: 500;
 }
 
+.error-message {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: .75rem;
+    margin-top: 10px;
+    margin-bottom: -5px;
+    color: #d2002a;
+}

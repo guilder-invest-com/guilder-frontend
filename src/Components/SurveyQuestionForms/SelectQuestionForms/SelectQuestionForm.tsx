@@ -20,8 +20,6 @@ export default function SelectQuestionForm({
   next,
 }: SelectQuestionFormProps) {
   const handleOptionSelect = (option: string) => {
-    const updateObject = { [questionId]: option };
-    console.log("Updating with object:", updateObject);
     updateFields({ [questionId]: option });
     next();
   };

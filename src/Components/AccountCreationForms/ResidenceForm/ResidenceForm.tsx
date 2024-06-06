@@ -1,3 +1,4 @@
+import React from "react";
 import FormWrapper from "../FormWrapper/FormWrapper";
 import {
   allCitizenStatus,
@@ -35,6 +36,7 @@ type ResidenceData = {
 
 type ResidenceFormProps = ResidenceData & {
   updateFields: (fields: Partial<ResidenceData>) => void;
+  error: string;
 };
 
 const customSelectStyles = {
@@ -49,7 +51,6 @@ const customSelectStyles = {
   }),
   input: (provided: any) => ({
     ...provided,
-
   }),
   placeholder: (provided: any) => ({
     ...provided,
@@ -72,6 +73,7 @@ export default function ResidenceForm({
   stateOfResidence,
   citizenshipStatus,
   updateFields,
+  error,
 }: ResidenceFormProps) {
   const handleSelectChange = (
     selectedOption: OptionType | null,
@@ -99,7 +101,7 @@ export default function ResidenceForm({
           classNamePrefix="react-select"
           styles={customSelectStyles}
         />
-        <br></br>
+        <br />
         <Select
           required
           value={stateOptions.find(
@@ -114,7 +116,7 @@ export default function ResidenceForm({
           classNamePrefix="react-select"
           styles={customSelectStyles}
         />
-        <br></br>
+        <br />
         <Select
           required
           value={citizenshipOptions.find(

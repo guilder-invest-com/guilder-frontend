@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useRef, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import RoleForm from "../../Components/AccountCreationForms/RoleForm/RoleForm";
 import useMultistepForm from "../../useMultistepForm";
 import AccountForm from "../../Components/AccountCreationForms/AccountForm/AccountForm";
@@ -12,16 +12,15 @@ import {
 } from "../../Api/api";
 import "./SignupPage.css";
 import { doPasswordsMatch, isValidEmail } from "../../utils/validations";
-// import { hashPassword } from "../../utils/hashPassword";
 import ResidenceForm from "../../Components/AccountCreationForms/ResidenceForm/ResidenceForm";
 import UserPersonalInformationForm from "../../Components/AccountCreationForms/UserPersonalInformationForm/UserPersonalInformationForm";
 import UserAddressForm from "../../Components/AccountCreationForms/UserAddressForm/UserAddressForm";
 import PhoneNumberForm from "../../Components/AccountCreationForms/PhoneNumberForm/PhoneNumberForm";
 import KYCQuestionsForm from "../../Components/SurveyQuestionForms/KYCQuestionsForm/KYCQuestionForm";
 import SelectQuestionForm from "../../Components/SurveyQuestionForms/SelectQuestionForms/SelectQuestionForm";
-import KycTupleQuestionForm from "../../Components/SurveyQuestionForms/KycTupleQuestionsForm/KycTupleQuestionForm";
 import { useAuth } from "../../Context/AuthContext";
 import Navbar from "../../Components/Navbar/Navbar";
+import KycTupleQuestionForm from "../../Components/SurveyQuestionForms/KycTupleQuestionsForm/KycTupleQuestionForm";
 
 type Question = {
   id: number;
@@ -50,14 +49,12 @@ export type UpdateUserData = {
   state?: string;
   zip?: number;
   phone?: string;
-  about?: string; 
+  about?: string;
   kycResponses?: { [questionId: string]: string };
 };
 
-
 type FormData = {
-  id?: string; 
-  // [key: string]: any;
+  id?: string;
   email: string;
   username: string;
   displayName: string;
@@ -77,7 +74,7 @@ type FormData = {
   zipcode: string;
   phoneNumber: string;
   about: string;
-  kycResponses: { [questionId: string]: string   };
+  kycResponses: { [questionId: string]: string };
 };
 
 const INITIAL_DATA: FormData = {
@@ -111,7 +108,7 @@ export default function SignupPage() {
   const [emailAvailable, setEmailAvailable] = useState<boolean>(true);
   const [usernameAvailable, setUsernameAvailable] = useState<boolean>(true);
   const [kycRadioQuestions, setKycRadioQuestions] = useState<Question[]>([]);
-  // const [kycTupleQuestions, setKyctupleQuestions] = useState<Question[]>([]);
+  const [residenceError, setResidenceError] = useState<string>("");
 
   useEffect(() => {
     const fetchKycQuestions = async () => {
@@ -119,16 +116,10 @@ export default function SignupPage() {
         const fetchedQuestions = await getSurveyQuestions();
         const questions: Question[] = fetchedQuestions;
         setKycQuestions(questions);
-        console.log(kycQuestions);
         setKycRadioQuestions(
           questions.filter((q) => q.answer_type === "radio")
         );
-        // questions.filter((q, index) => q.answer_type === "radio" && index < 6)
-        // );
         setSelectQuestions(questions.filter((q) => q.answer_type === "select"));
-        // setKyctupleQuestions(
-        //   questions.filter((q) => q.answer_type === "tuple")
-        // );
       } catch (error: any) {
         console.error("Could not fetch KYC questions: ", error);
       }
@@ -147,7 +138,11 @@ export default function SignupPage() {
         emailAvailable={emailAvailable}
         usernameAvailable={usernameAvailable}
       />,
-      <ResidenceForm {...data} updateFields={updateFields} />,
+      <ResidenceForm
+        {...data}
+        updateFields={updateFields}
+        error={residenceError}
+      />,
       <UserPersonalInformationForm {...data} updateFields={updateFields} />,
       <UserAddressForm {...data} updateFields={updateFields} />,
       <PhoneNumberForm {...data} updateFields={updateFields} />,
@@ -181,12 +176,10 @@ export default function SignupPage() {
 
   function handleKycResponseChange(changes: { [key: string]: any }) {
     setData((prev) => {
-      console.log("Incoming changes in SignupPage:", changes);
       const updatedKycResponses = {
         ...prev.kycResponses,
         ...changes,
       };
-      console.log(updatedKycResponses);
       return {
         ...prev,
         kycResponses: updatedKycResponses,
@@ -197,16 +190,13 @@ export default function SignupPage() {
   const lastCheckedEmailRef = useRef("");
 
   async function checkEmailAvailability(email: string) {
-    console.log("inside checkemail");
     const trimmedEmail = email.trim();
     if (!trimmedEmail || trimmedEmail === lastCheckedEmailRef.current) {
       return;
     }
     try {
       const response = await isEmailAvailable(email.trim());
-      console.log("api called");
       setEmailAvailable(response.available);
-      console.log("email available: ", response.available);
       lastCheckedEmailRef.current = trimmedEmail;
     } catch (error: any) {
       console.log("email avail check failed: ", error);
@@ -232,6 +222,20 @@ export default function SignupPage() {
     }
   }
 
+  function validateResidence() {
+    if (
+      data.countryOfTaxResidence !== "United States" ||
+      data.citizenshipStatus !== "U.S. Citizen"
+    ) {
+      setResidenceError(
+        "You must be a US resident and a US citizen to sign up."
+      );
+      return false;
+    }
+    setResidenceError("");
+    return true;
+  }
+
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
 
@@ -244,6 +248,10 @@ export default function SignupPage() {
         alert("Passwords do not match. Please try again.");
         return;
       }
+    }
+
+    if (currentStepIndex === 2 && !validateResidence()) {
+      return;
     }
 
     switch (currentStepIndex) {
@@ -296,15 +304,12 @@ export default function SignupPage() {
     };
     try {
       const response = await registerUser(userData);
-      console.log("Registration successful", response);
       alert("Successful Account Creation");
       try {
         await signIn(userData.email, userData.password, false);
-        console.log("User signed in");
       } catch (error: any) {
         console.log(`could not ${data.email} sign user in`);
       }
-      // next();
     } catch (error: any) {
       console.error("Registration failed: ", error);
     }
@@ -332,29 +337,27 @@ export default function SignupPage() {
     };
     try {
       const response = await updateUserProfile(userData);
-      console.log("Update successful", response);
     } catch (error: any) {
       console.error("Update failed: ", error);
     }
   }
 
   async function handleKycSubmission() {
-    const surveyResponses = Object.entries(data.kycResponses).map(([questionId, answer]) => ({
-      questionId: Number(questionId),
-      answer: answer,
-    }));
-  
+    const surveyResponses = Object.entries(data.kycResponses).map(
+      ([questionId, answer]) => ({
+        questionId: Number(questionId),
+        answer: answer,
+      })
+    );
+
     try {
       const response = await submitSurveyQuestions(surveyResponses);
-      console.log("Survey submission successful", response);
       alert("Survey submitted successfully!");
-      // next(); 
     } catch (error: any) {
       console.error("Survey submission failed: ", error);
       alert("Failed to submit survey.");
     }
   }
-  
 
   return (
     <>
@@ -383,6 +386,9 @@ export default function SignupPage() {
                 </button>
               )}
             </div>
+          )}
+          {currentStepIndex === 2 && residenceError && (
+            <div className="residence-error">{residenceError}</div>
           )}
         </form>
       </div>

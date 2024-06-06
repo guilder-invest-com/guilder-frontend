@@ -6,7 +6,7 @@ import "./ProfilePage.css";
 
 type Props = {};
 
-function capitalizeFirstLetter(name: string | null | undefined): string {
+export function capitalizeFirstLetter(name: string | null | undefined): string {
   if (!name) return "";
   return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 }

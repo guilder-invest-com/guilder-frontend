@@ -30,7 +30,6 @@ export default function LoginPage() {
 
   function updateFields(fields: Partial<FormData>) {
     setData((prev) => ({ ...prev, ...fields }));
-    console.log(fields);
   }
 
   async function onSubmit(e: FormEvent) {

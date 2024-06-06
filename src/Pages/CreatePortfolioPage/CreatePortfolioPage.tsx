@@ -4,7 +4,11 @@ import "./CreatePortfolioPage.css";
 import useMultistepForm from "../../useMultistepForm";
 import CreatePortfolioForm from "../../Components/CreatePortfolioForms/CreatePortfolioForm/CreatePortfolioForm";
 import AddStockForm from "../../Components/CreatePortfolioForms/AddStockForm/AddStockForm";
-import { fetchAllStocks, fetchStockPrice, createPortfolio } from "../../Api/api";
+import {
+  fetchAllStocks,
+  fetchStockPrice,
+  createPortfolio,
+} from "../../Api/api";
 import CreatePortfolioReviewForm from "../../Components/CreatePortfolioForms/PortfolioReviewForm/CreatePortfolioReviewForm";
 import { useAuth } from "../../Context/AuthContext"; // Import useAuth
 
@@ -32,10 +36,11 @@ const INITIAL_DATA: FormData = {
 };
 
 export default function CreatePortfolioPage() {
-  useAuth(); 
+  useAuth();
   const [data, setData] = useState<FormData>(INITIAL_DATA);
   const [stocks, setStocks] = useState<Stock[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     const fetchStocks = async () => {
@@ -97,6 +102,7 @@ export default function CreatePortfolioPage() {
         stock.ticker === ticker ? { ...stock, weight } : stock
       ),
     }));
+    setError(""); // Clear error when weights are updated
   }
 
   function resetStocks() {
@@ -106,33 +112,33 @@ export default function CreatePortfolioPage() {
     }));
   }
 
-  const { step, isFirstStep, isLastStep, back, next } =
-    useMultistepForm([
-      <CreatePortfolioForm {...data} updateFields={updateFields} />,
-      <AddStockForm
-        stocks={stocks}
-        loading={loading}
-        selectedStocks={data.portfolio_holdings}
-        addStock={addStock}
-        removeStock={removeStock}
-        updateStockWeight={updateStockWeight}
-        resetStocks={resetStocks}
-      />,
-      <CreatePortfolioReviewForm risk_profile={"aggressive"} {...data} />,
-    ]);
+  const { step, isFirstStep, isLastStep, back, next, currentStepIndex } = useMultistepForm([
+    <CreatePortfolioForm {...data} updateFields={updateFields} />,
+    <AddStockForm
+      stocks={stocks}
+      loading={loading}
+      selectedStocks={data.portfolio_holdings}
+      addStock={addStock}
+      removeStock={removeStock}
+      updateStockWeight={updateStockWeight}
+      resetStocks={resetStocks}
+      setError={setError}
+    />,
+    <CreatePortfolioReviewForm risk_profile={"aggressive"} {...data} />,
+  ]);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (isLastStep) {
       try {
-        await createPortfolio({ 
-          ticker: data.ticker, 
-          name: data.name, 
-          description: data.description, 
+        await createPortfolio({
+          ticker: data.ticker,
+          name: data.name,
+          description: data.description,
           risk_profile: "aggressive", // Fixed risk profile
           management_fee: data.managementFee, // Updated key to match backend
-          portfolio_holdings: data.portfolio_holdings 
-        }); 
+          portfolio_holdings: data.portfolio_holdings,
+        });
         console.log("Portfolio created successfully");
         alert("Portfolio created successfully");
       } catch (error) {
@@ -140,7 +146,15 @@ export default function CreatePortfolioPage() {
         alert("Error creating portfolio. Please try again.");
       }
     } else {
-      next();
+      const totalWeight = data.portfolio_holdings.reduce(
+        (total, stock) => total + stock.weight,
+        0
+      );
+      if (currentStepIndex === 1 && totalWeight !== 100) {
+        setError("Total weight must be exactly 100%");
+      } else {
+        next();
+      }
     }
   }
 
@@ -161,6 +175,7 @@ export default function CreatePortfolioPage() {
               {isLastStep ? "Submit" : "Next"}
             </button>
           </div>
+            {currentStepIndex === 1 && error && <div className="error-message">{error}</div>}
         </form>
       </div>
     </div>

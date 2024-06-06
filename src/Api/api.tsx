@@ -57,26 +57,12 @@ export async function handleLogin(email: string, password: string) {
       email,
       password,
     });
-    console.log("axios post response:", response);
-    console.log(Cookies.get("connect.sid"));
-    console.log(Cookies.get("sid"));
-    return response; // Return the full response to access headers
+    return response; 
   } catch (error: any) {
     console.error("Login failed:", error.response || error.message);
     throw error;
   }
 }
-// export async function handleLogin(email: string, password: string) {
-//   try {
-//     console.log("before axios post call");
-//     const response = await axiosInstance.post('/auth/login', { email, password });
-//     console.log("axios post response: ", response);
-//     return response.data;
-//   } catch (error: any) {
-//     console.error("Login failed: ", error.response || error.message);
-//     throw error;
-//   }
-// }
 
 export async function isEmailAvailable(email: string) {
   try {
@@ -117,7 +103,7 @@ export async function submitSurveyQuestions(
     const response = await axiosInstance.post(
       "/survey/submit",
       surveyResponses
-    ); // Adjusted here
+    ); 
     return response.data;
   } catch (error: any) {
     console.error(

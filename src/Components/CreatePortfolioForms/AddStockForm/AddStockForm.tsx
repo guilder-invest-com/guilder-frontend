@@ -17,6 +17,7 @@ type AddStockFormProps = {
   removeStock: (ticker: string) => void;
   updateStockWeight: (ticker: string, weight: number) => void;
   resetStocks: () => void;
+  setError: (error: string) => void;
 };
 
 export default function AddStockForm({
@@ -27,6 +28,7 @@ export default function AddStockForm({
   removeStock,
   updateStockWeight,
   resetStocks,
+  setError,
 }: AddStockFormProps) {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
@@ -61,9 +63,19 @@ export default function AddStockForm({
     setShowDropdown(true);
   };
 
-  const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>, ticker: string) => {
+  const handleWeightChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    ticker: string
+  ) => {
     const newWeight = parseFloat(e.target.value);
     updateStockWeight(ticker, newWeight);
+    setError("");
+  };
+
+  const handleWeightFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (e.target.value === "0") {
+      e.target.value = "";
+    }
   };
 
   const calculateTotalWeight = () => {
@@ -81,8 +93,12 @@ export default function AddStockForm({
             value={searchTerm}
             onChange={handleInputChange}
           />
-          <button className="reset-button" onClick={resetStocks}>Reset</button>
-          <button className="csv-button">CSV</button>
+          <button className="reset-button" type="button" onClick={resetStocks}>
+            Reset
+          </button>
+          <button className="csv-button" type="button">
+            CSV
+          </button>
         </div>
         {showDropdown && searchTerm && (
           <ul className="stock-list">
@@ -123,7 +139,9 @@ export default function AddStockForm({
             {selectedStocks.map((stock) => (
               <tr key={stock.ticker}>
                 <td className="remove-button">
-                  <button onClick={() => removeStock(stock.ticker)}>&#10006</button>
+                  <button onClick={() => removeStock(stock.ticker)}>
+                    &#10006;
+                  </button>
                 </td>
                 <td>{stock.ticker}</td>
                 <td>{stock.name}</td>
@@ -133,6 +151,7 @@ export default function AddStockForm({
                     type="number"
                     value={stock.weight}
                     onChange={(e) => handleWeightChange(e, stock.ticker)}
+                    onFocus={handleWeightFocus}
                     min="0"
                     max="100"
                   />

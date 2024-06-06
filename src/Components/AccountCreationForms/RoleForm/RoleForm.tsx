@@ -16,7 +16,6 @@ export default function RoleForm({ updateFields, account_type, next }: RoleFormP
       updateFields({ account_type: newRole });
     }
     next();
-    console.log("Next called from roleform = ", newRole);
   };
 
   return (

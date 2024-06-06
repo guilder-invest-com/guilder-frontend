@@ -31,6 +31,7 @@ export default function CreatePortfolioForm({
             placeholder="Ticker"
             type="text"
             id="portfolioName"
+            className="uppercase-input"
             value={ticker}
             onChange={(e) => updateFields({ ticker: e.currentTarget.value })}
           />
