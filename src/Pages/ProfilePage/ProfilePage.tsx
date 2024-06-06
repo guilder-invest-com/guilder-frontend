@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { getUserProfileData } from "../../Api/api";
 import Navbar from "../../Components/Navbar/Navbar";
 import { useAuth } from "../../Context/AuthContext";
+import profilePic from "../../assets/profile-pic.png"; 
 import "./ProfilePage.css";
 
 type Props = {};
@@ -41,7 +42,7 @@ export default function ProfilePage({}: Props) {
         <div className="profile-container">
           <div className="profile-header">
             <img
-              src="https://nserc-hi-am.ca/2023/wp-content/uploads/sites/21/2022/04/285-2855863_a-festival-celebrating-tractors-round-profile-picture-placeholder.png"
+              src={profilePic}
               alt="Profile Picture"
               className="profile-pic"
             />
