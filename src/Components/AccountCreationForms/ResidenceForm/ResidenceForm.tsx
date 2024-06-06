@@ -1,4 +1,3 @@
-import React from "react";
 import FormWrapper from "../FormWrapper/FormWrapper";
 import {
   allCitizenStatus,
@@ -73,7 +72,6 @@ export default function ResidenceForm({
   stateOfResidence,
   citizenshipStatus,
   updateFields,
-  error,
 }: ResidenceFormProps) {
   const handleSelectChange = (
     selectedOption: OptionType | null,
