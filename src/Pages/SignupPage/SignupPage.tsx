@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import RoleForm from "../../Components/AccountCreationForms/RoleForm/RoleForm";
 import useMultistepForm from "../../useMultistepForm";
 import AccountForm from "../../Components/AccountCreationForms/AccountForm/AccountForm";
@@ -109,6 +109,9 @@ export default function SignupPage() {
   const [usernameAvailable, setUsernameAvailable] = useState<boolean>(true);
   const [kycRadioQuestions, setKycRadioQuestions] = useState<Question[]>([]);
   const [residenceError, setResidenceError] = useState<string>("");
+
+  const nothing = kycQuestions;
+  console.log(nothing);
 
   useEffect(() => {
     const fetchKycQuestions = async () => {
@@ -303,7 +306,7 @@ export default function SignupPage() {
       password: data.password, 
     };
     try {
-      const response = await registerUser(userData);
+      await registerUser(userData);
       alert("Successful Account Creation");
       try {
         await signIn(userData.email, userData.password, false);
@@ -336,7 +339,7 @@ export default function SignupPage() {
       account_type: data.account_type,
     };
     try {
-      const response = await updateUserProfile(userData);
+      await updateUserProfile(userData);
     } catch (error: any) {
       console.error("Update failed: ", error);
     }
@@ -351,7 +354,7 @@ export default function SignupPage() {
     );
 
     try {
-      const response = await submitSurveyQuestions(surveyResponses);
+      await submitSurveyQuestions(surveyResponses);
       alert("Survey submitted successfully!");
     } catch (error: any) {
       console.error("Survey submission failed: ", error);
