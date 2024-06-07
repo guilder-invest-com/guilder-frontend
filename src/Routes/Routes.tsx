@@ -8,6 +8,7 @@ import ProfilePage from "../Pages/ProfilePage/ProfilePage";
 import CreatePortfolioPage from "../Pages/CreatePortfolioPage/CreatePortfolioPage";
 import DiscoverPage from "../Pages/DiscoverPage/DiscoverPage";
 import MyPortfoliosPage from "../Pages/MyPortfoliosPage/MyPortfoliosPage";
+import PortfolioDetailsPage from "../Pages/PortfolioDetailsPage/PortfolioDetailsPage";
 
 export const router = createBrowserRouter([
   {
@@ -53,6 +54,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <DiscoverPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "portfolioDetails",
+        element: (
+          <ProtectedRoute>
+            <PortfolioDetailsPage />
           </ProtectedRoute>
         ),
       },

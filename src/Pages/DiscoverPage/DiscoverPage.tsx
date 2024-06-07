@@ -3,6 +3,7 @@ import Navbar from "../../Components/Navbar/Navbar";
 import "./DiscoverPage.css";
 import { getAllPortfolios } from "../../Api/api";
 import { capitalizeFirstLetter } from "../ProfilePage/ProfilePage";
+import { useNavigate } from "react-router-dom";
 
 type Portfolio = {
   id: number;
@@ -17,13 +18,22 @@ type Portfolio = {
   aum: string;
   createdAt: string;
   display_name: string;
-  user: PortfolioUser
+  user: PortfolioUser;
+  holdings: PortfolioHolding[];
+};
+
+type PortfolioHolding = {
+  id: string;
+  portfolioId: string;
+  ticker: string;
+  name: string;
+  price: number;
+  weight: number;
 };
 
 type PortfolioUser = {
   display_name: string;
 };
-
 
 export default function DiscoverPage() {
   const [portfolios, setPortfolios] = useState<Portfolio[]>([]);
@@ -41,12 +51,18 @@ export default function DiscoverPage() {
     fetchPortfolios();
   }, []);
 
-function formatDate(dateString: string): string {
+  function formatDate(dateString: string): string {
     const date = new Date(dateString);
     const month = date.toLocaleString("default", { month: "short" });
     const year = date.getFullYear();
     return `${month}. ${year}`;
-}
+  }
+
+  const navigate = useNavigate();
+
+  const handleRowClick = (portfolio: Portfolio) => {
+    navigate(`/portfolio/${portfolio.id}`, { state: { portfolio } });
+  };
 
   return (
     <div>
@@ -79,12 +95,19 @@ function formatDate(dateString: string): string {
                 {portfolios.map((portfolio, index) => (
                   <tr
                     key={portfolio.id}
+                    onClick={() => handleRowClick(portfolio)}
                     className={index % 2 === 0 ? "even-row" : "odd-row"}
                   >
                     <td className="ticker">{portfolio.ticker.toUpperCase()}</td>
-                    <td className="name">{capitalizeFirstLetter(portfolio.name)}</td>
-                    <td className="manager">{capitalizeFirstLetter(portfolio.user.display_name)}</td>
-                    <td className="small">{capitalizeFirstLetter(portfolio.risk_profile)}</td>
+                    <td className="name">
+                      {capitalizeFirstLetter(portfolio.name)}
+                    </td>
+                    <td className="manager">
+                      {capitalizeFirstLetter(portfolio.user.display_name)}
+                    </td>
+                    <td className="small">
+                      {capitalizeFirstLetter(portfolio.risk_profile)}
+                    </td>
                     <td className="small seven-day-return">+4.69%</td>
                     <td className="small">{formatDate(portfolio.createdAt)}</td>
                     <td className="investors">35</td>

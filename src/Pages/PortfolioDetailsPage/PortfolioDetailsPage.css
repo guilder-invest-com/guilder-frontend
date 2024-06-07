@@ -1,0 +1,157 @@
+.portfoliosDetailsPage-main-content {
+    margin-top: var(--navbar-height);
+    padding: 2rem;
+    background-color: #f8f9fa;
+    min-height: calc(100vh - var(--navbar-height));
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 7rem;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.portfoliosDetailsPage-container {
+    width: 80%;
+    max-width: 1500px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    padding-bottom: 1rem;
+}
+
+.portfoliosDetailsPage-header-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 1rem;
+    margin-bottom: -1rem;
+}
+
+.portfoliosDetailsPage-header-row h4 {
+    font-size: 1.2rem;
+    padding-top: 5px;
+}
+
+.portfoliosDetailsPage-header-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    padding: 0;
+    margin-top: -1.5rem;
+}
+
+.portfoliosDetailsPage-header-buttons button {
+    padding: .3rem .9rem;
+    border-radius: 5px;
+}
+
+.portfoliosDetailsPage-header-buttons .btn-blue {
+    background-color: #0B6CFF;
+    color: white;
+    border: none;
+}
+
+.portfoliosDetailsPage-header-buttons .btn-yellow {
+    background-color: #FECC1D;
+    color: black;
+    border: none;
+}
+
+.portfoliosDetailsPage-header-buttons .btn-blue:hover {
+    background-color: #0056b3;
+}
+
+.portfoliosDetailsPage-header-buttons .btn-yellow:hover {
+    background-color: #e0a800;
+}
+
+.portfoliosDetailsPage-portfolio-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.portfoliosDetailsPage-portfolio-deatils {
+    width: 50%;
+    display: flex;
+    align-items: left;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: left;
+    padding-left: 1rem;
+    padding-right: .8rem;
+}
+
+.portfoliosDetailsPage-portfolio-deatils label {
+    color: #8F8F8F;
+    font-size: .9rem;
+}
+
+.portfoliosDetailsPage-portfolio-deatils p {
+    margin-bottom: 10px;
+}
+
+.portfoliosDetailsPage-portfolio-deatils hr {
+    margin-bottom: -5px;
+    margin-top: -15px;
+}
+
+.portfoliosDetailsPage-header-row table > thead {
+    text-align: left;
+}
+
+.portfoliosDetailsPage-table {
+    width: 98%;
+    margin: auto;
+    margin-top: -10px;
+    border-collapse: collapse;
+}
+
+.portfoliosDetailsPage-table thead th,
+.portfoliosDetailsPage-table-body td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 8px 12px;
+}
+
+.portfoliosDetailsPage-table thead th {
+    text-align: left;
+}
+
+.portfoliosDetailsPage-table-body td {
+    text-align: left;
+}
+
+.portfoliosDetailsPage-table th.ticker,
+.portfoliosDetailsPage-table td.ticker {
+    width: 10%;
+}
+
+.portfoliosDetailsPage-table th.name,
+.portfoliosDetailsPage-table td.name {
+    width: 50%;
+}
+
+.portfoliosDetailsPage-table th.price,
+.portfoliosDetailsPage-table td.price,
+.portfoliosDetailsPage-table th.weight,
+.portfoliosDetailsPage-table td.weight {
+    width: 20%;
+}
+
+.portfoliosDetailsPage-table-body tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.portfoliosDetailsPage-table-body tr:nth-child(odd) {
+    background-color: white;
+}

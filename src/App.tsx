@@ -8,7 +8,7 @@ import ProfilePage from "./Pages/ProfilePage/ProfilePage";
 import CreatePortfolioPage from "./Pages/CreatePortfolioPage/CreatePortfolioPage";
 import DiscoverPage from "./Pages/DiscoverPage/DiscoverPage";
 import MyPortfoliosPage from "./Pages/MyPortfoliosPage/MyPortfoliosPage";
-// import { Navbar } from "react-bootstrap";
+import PortfolioDetailsPage from "./Pages/PortfolioDetailsPage/PortfolioDetailsPage";
 
 function App() {
   return (
@@ -20,6 +20,7 @@ function App() {
       <Route path="/create" element={<ProtectedRoute><CreatePortfolioPage /></ProtectedRoute>} />
       <Route path="/discover" element={<ProtectedRoute><DiscoverPage /></ProtectedRoute>} />
       <Route path="/user/portfolios" element={<ProtectedRoute><MyPortfoliosPage /></ProtectedRoute>} />
+      <Route path="/portfolio/:id" element={<ProtectedRoute><PortfolioDetailsPage /></ProtectedRoute>} />
       // ... other routes
     </Routes>
   );

@@ -6,7 +6,6 @@ import "./MyPortfoliosPage.css";
 import { capitalizeFirstLetter } from "../ProfilePage/ProfilePage";
 import { useNavigate } from "react-router-dom";
 
-
 type UserPortfolio = {
   id: string;
   ticker: string;
@@ -18,6 +17,21 @@ type UserPortfolio = {
   createdAt: string;
   investors: number;
   management_fee: string;
+  holdings: PortfolioHolding[];
+  user: PortfolioUser;
+};
+
+type PortfolioHolding = {
+  id: string;
+  portfolioId: string;
+  ticker: string;
+  name: string;
+  price: number;
+  weight: number;
+};
+
+type PortfolioUser = {
+  display_name: string;
 };
 
 export default function MyPortfoliosPage() {
@@ -39,18 +53,22 @@ export default function MyPortfoliosPage() {
     fetchPortfolios();
   }, [user]);
 
-const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const month = date.toLocaleString("default", { month: "short" });
     const year = date.getFullYear();
     return `${month}. ${year}`;
-};
+  };
 
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
-const handleCreatePortfolio = () => {
+  const handleCreatePortfolio = () => {
     navigate("/create");
-};
+  };
+
+  const handleRowClick = (portfolio: UserPortfolio) => {
+    navigate(`/portfolio/${portfolio.id}`, { state: { portfolio } });
+  };
 
   return (
     <div>
@@ -79,12 +97,15 @@ const handleCreatePortfolio = () => {
             </thead>
             <tbody>
               {portfolios.map((portfolio) => (
-                <tr key={portfolio.id}>
+                <tr
+                  key={portfolio.id}
+                  onClick={() => handleRowClick(portfolio)}
+                >
                   <td>{portfolio.ticker.toUpperCase()}</td>
                   <td>{capitalizeFirstLetter(portfolio.name)}</td>
                   <td>{capitalizeFirstLetter(portfolio.risk_profile)}</td>
                   <td>$240k</td>
-                  <td>+45%</td>
+                  <td className="small seven-day-return">+45%</td>
                   <td>14 days</td>
                   <td>{formatDate(portfolio.createdAt)}</td>
                   <td className="center">45</td>
