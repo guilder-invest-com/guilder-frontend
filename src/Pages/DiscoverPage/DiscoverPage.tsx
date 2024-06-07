@@ -16,7 +16,14 @@ type Portfolio = {
   management_fee: string;
   aum: string;
   createdAt: string;
+  display_name: string;
+  user: PortfolioUser
 };
+
+type PortfolioUser = {
+  display_name: string;
+};
+
 
 export default function DiscoverPage() {
   const [portfolios, setPortfolios] = useState<Portfolio[]>([]);
@@ -76,7 +83,7 @@ function formatDate(dateString: string): string {
                   >
                     <td className="ticker">{portfolio.ticker.toUpperCase()}</td>
                     <td className="name">{capitalizeFirstLetter(portfolio.name)}</td>
-                    <td className="manager">Karl Dessenne</td>
+                    <td className="manager">{capitalizeFirstLetter(portfolio.user.display_name)}</td>
                     <td className="small">{capitalizeFirstLetter(portfolio.risk_profile)}</td>
                     <td className="small seven-day-return">+4.69%</td>
                     <td className="small">{formatDate(portfolio.createdAt)}</td>
